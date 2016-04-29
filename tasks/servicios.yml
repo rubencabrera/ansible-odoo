@@ -1,0 +1,23 @@
+---
+# Configura los servicios de odoo. Ejecutar después de main y de postgres. 
+
+- name: Set Odoo service runlevels
+  command: update-rc.d {{ odoo_service }} defaults
+  changed_when: False
+  tags:
+    - odoo
+    - odoo_init
+
+- name: Enable Odoo service
+  service: name={{ odoo_service }} enabled=yes
+  when: odoo_init == True
+  tags:
+    - odoo
+    - odoo_init
+
+- name: Disable Odoo service
+  service: name={{ odoo_service }} enabled=no
+  when: odoo_init == False
+  tags:
+    - odoo
+    - odoo_init

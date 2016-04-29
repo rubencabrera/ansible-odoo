@@ -29,7 +29,7 @@ odoo_repo_dest: "{{ odoo_rootdir }}"
 odoo_repo_rev: 8.0
 
 # Odoo parameters
-odoo_config_addons_path: "/home/{{ odoo_user }}/odoo/server/addons,/home/{{ odoo_user }}/odoo/server/openerp/addons"
+odoo_config_addons_path: "/home/{{ odoo_user }}/odoo/addons,/home/{{ odoo_user }}/odoo/server/openerp/addons"
 odoo_config_admin_passwd: admin
 odoo_config_auto_reload: False
 odoo_config_csv_internal_sep: ','

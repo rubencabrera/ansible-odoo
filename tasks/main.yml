@@ -1,13 +1,14 @@
 ---
 
 - name: Install Odoo dependencies
-  action: apt pkg=python-dev,python-psycopg2,python-simplejson,python-lxml,python-tz,python-imaging,python-yaml,python-reportlab,python-mako,python-pychart,python-werkzeug,python-dateutil,python-unittest2,python-mock,python-openid,python-docutils,python-feedparser,python-gdata,python-jinja2,python-psutil,python-pydot,python-webdav,python-vatnumber,python-vobject,python-xlwt,python-ldap,python-openssl,python-egenix-mxdatetime,python-zsi,python-requests,python-pypdf,python-decorator,python-passlib,python-babel,python-gevent
+  action: apt pkg=python-dev,xfonts-utils,python-cups,python-jinja2,python-unicodecsv,python-pyparsing,python-libxslt1,python-psycopg2,python-geoip,xfonts-base,python-apt,xfonts-75dpi,python-pybabel,python-simplejson,python-lxml,python-pyinotify,python-tz,python-imaging,python-yaml,python-reportlab,python-mako,python-pychart,python-werkzeug,python-dateutil,python-unittest2,python-mock,python-openid,python-docutils,python-feedparser,python-gdata,python-jinja2,python-psutil,python-pydot,python-webdav,python-vatnumber,python-vobject,python-xlwt,python-ldap,python-openssl,python-egenix-mxdatetime,python-zsi,python-requests,python-pypdf,python-decorator,python-passlib,python-babel,python-gevent
           state=installed
           update_cache=yes
   tags:
     - odoo
     - odoo_packages
-
+- name: Instalar wkhtmltopdf
+  action: apt deb=http://download.gna.org/wkhtmltopdf/0.12/0.12.1/wkhtmltox-0.12.1_linux-trusty-amd64.deb
 - name: Install common tools
   action: apt pkg=xauth,python-pip
           state=installed install_recommends=yes
@@ -15,8 +16,19 @@
     - odoo
     - odoo_packages
 
+- name: Instalar locale para el sistema
+  locale_gen: name=es_ES.UTF-8 state=present
+
 - name: Install Odoo dependencies (from PyPi)
   pip: name=psycogreen
+  tags:
+    - odoo
+    - odoo_packages
+
+
+- name: Instalar postgres
+  action: apt pkg=postgresql
+          state=installed
   tags:
     - odoo
     - odoo_packages
@@ -42,28 +54,34 @@
     - odoo
     - odoo_project
 
-- name: Clone project repository (Mercurial)
-  sudo_user: "{{ odoo_user }}"
-  hg:   repo={{ odoo_repo_url }}
-        dest={{ odoo_repo_dest }}
-        revision={{ odoo_repo_rev }}
-        force=no
-  when: odoo_repo_type == 'hg' and project_path.stat.exists == False and odoo_repo_url
-  tags:
-    - odoo
-    - odoo_project
+# No nos interesa mercurial
+# - name: Clone project repository (Mercurial)
+#   sudo_user: "{{ odoo_user }}"
+#   hg:   repo={{ odoo_repo_url }}
+#         dest={{ odoo_repo_dest }}
+#         revision={{ odoo_repo_rev }}
+#         force=no
+#   when: odoo_repo_type == 'hg' and project_path.stat.exists == False and odoo_repo_url
+#   tags:
+#     - odoo
+#     - odoo_project
 
 - name: Clone project repository (Git)
-  sudo_user: "{{ odoo_user }}"
   git:  repo={{ odoo_repo_url }}
         dest={{ odoo_repo_dest }}
         version={{ odoo_repo_rev }}
         update=no
         force=no
+        depth=1
   when: odoo_repo_type == 'git' and odoo_repo_url
   tags:
     - odoo
     - odoo_project
+
+- name: Cambiar propietario del directorio
+  file: path={{ odoo_workdir }} state=directory
+        owner={{ odoo_user }} group={{ odoo_user }} recurse=yes
+
 
 # [ ODOO 8.0 ]
 - name: Copy Odoo configuration file (8.0)
@@ -87,141 +105,12 @@
     - odoo_config
 # [/ ODOO 8.0 ]
 
-- name: Remote PostgreSQL - Add the Odoo user
-  delegate_to: "{{ odoo_config_db_host }}"
-  remote_user: "{{ odoo_config_db_host_user }}"
-  sudo: yes
-  sudo_user: postgres
-  postgresql_user: name={{ odoo_config_db_user }}
-                   role_attr_flags=CREATEDB,NOSUPERUSER
-  when: odoo_config_db_host not in [False, 'localhost', '127.0.0.1']
-  tags:
-    - odoo
-    - odoo_postgresql
-
-- name: Local PostgreSQL - Add the Odoo user
-  sudo: yes
-  sudo_user: postgres
-  postgresql_user: name={{ odoo_config_db_user }}
-                   role_attr_flags=CREATEDB,NOSUPERUSER
-  when: odoo_config_db_host in [False, 'localhost', '127.0.0.1']
-  tags:
-    - odoo
-    - odoo_postgresql
-
-- name: Remote PostgreSQL - Set the Odoo user password
-  delegate_to: "{{ odoo_config_db_host }}"
-  remote_user: "{{ odoo_config_db_host_user }}"
-  sudo: yes
-  sudo_user: postgres
-  postgresql_user: name={{ odoo_config_db_user }}
-                   password={{ odoo_config_db_passwd }}
-  when: odoo_config_db_host not in [False, 'localhost', '127.0.0.1']
-        and odoo_config_db_passwd is defined and odoo_config_db_passwd
-  tags:
-    - odoo
-    - odoo_postgresql
-
-- name: Local PostgreSQL - Set the Odoo user password
-  sudo: yes
-  sudo_user: postgres
-  postgresql_user: name={{ odoo_config_db_user }}
-                   password={{ odoo_config_db_passwd }}
-  when: odoo_config_db_host in [False, 'localhost', '127.0.0.1']
-        and odoo_config_db_passwd is defined and odoo_config_db_passwd
-  tags:
-    - odoo
-    - odoo_postgresql
-
-- name: Remote PostgreSQL - Create databases
-  delegate_to: "{{ odoo_config_db_host }}"
-  remote_user: "{{ odoo_config_db_host_user }}"
-  sudo: yes
-  sudo_user: postgres
-  postgresql_db:
-    name: "{{ item.name }}"
-    owner: "{{ odoo_config_db_user }}"
-    encoding: 'UTF-8'
-    lc_collate: "{{ item.locale}}"
-    lc_ctype: "{{ item.locale }}"
-    template: "template0"
-    state: present
-  with_items: odoo_databases
-  when: odoo_config_db_host not in [False, 'localhost', '127.0.0.1']
-  tags:
-    - odoo
-    - odoo_postgresql
-
-- name: Local PostgreSQL - Create databases
-  sudo: yes
-  sudo_user: postgres
-  postgresql_db:
-    name: "{{ item.name }}"
-    owner: "{{ odoo_config_db_user }}"
-    encoding: 'UTF-8'
-    lc_collate: "{{ item.locale}}"
-    lc_ctype: "{{ item.locale }}"
-    template: "template0"
-    state: present
-  with_items: odoo_databases
-  when: odoo_config_db_host in [False, 'localhost', '127.0.0.1']
-  tags:
-    - odoo
-    - odoo_postgresql
-
-- name: Remote PostgreSQL - Active the 'unaccent' extension on databases
-  delegate_to: "{{ odoo_config_db_host }}"
-  remote_user: "{{ odoo_config_db_host_user }}"
-  sudo: yes
-  sudo_user: postgres
-  shell: "psql {{ item.name }} -c 'CREATE EXTENSION IF NOT EXISTS \"unaccent\";'"
-  with_items: odoo_databases
-  when: odoo_config_db_host not in [False, 'localhost', '127.0.0.1']
-        and odoo_config_unaccent
-  changed_when: False
-  tags:
-    - odoo
-    - odoo_postgresql
-
-- name: Local PostgreSQL - Active the 'unaccent' extension on databases
-  sudo: yes
-  sudo_user: postgres
-  shell: "psql {{ item.name }} -c 'CREATE EXTENSION IF NOT EXISTS \"unaccent\";'"
-  with_items: odoo_databases
-  changed_when: False
-  when: odoo_config_db_host in [False, 'localhost', '127.0.0.1']
-        and odoo_config_unaccent
-  tags:
-    - odoo
-    - odoo_postgresql
-
-- name: Set Odoo service runlevels
-  command: update-rc.d {{ odoo_service }} defaults
-  changed_when: False
-  tags:
-    - odoo
-    - odoo_init
-
-- name: Enable Odoo service
-  service: name={{ odoo_service }} enabled=yes
-  when: odoo_init == True
-  tags:
-    - odoo
-    - odoo_init
-
-- name: Disable Odoo service
-  service: name={{ odoo_service }} enabled=no
-  when: odoo_init == False
-  tags:
-    - odoo
-    - odoo_init
-
-- name: Set SSH public keys for the Odoo user
-  authorized_key: user={{ odoo_user }}
-                  key="{{ lookup('file', item) }}"
-  with_fileglob:
-    - "{{ odoo_user_sshkeys }}"
-  when: odoo_user_sshkeys is defined and odoo_user_sshkeys
-  tags:
-    - odoo
-    - odoo_ssh
+# - name: Set SSH public keys for the Odoo user
+#   authorized_key: user={{ odoo_user }}
+#                   key="{{ lookup('file', item) }}"
+#   with_fileglob:
+#     - "{{ odoo_user_sshkeys }}"
+#   when: odoo_user_sshkeys is defined and odoo_user_sshkeys
+#   tags:
+#     - odoo
+#     - odoo_ssh

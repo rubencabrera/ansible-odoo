@@ -1,0 +1,149 @@
+# Repositorios para ledyspa
+---
+- git: repo=https://github.com/acysos/odoo-addons.git dest=/opt/Upgrade/common/acysos version=8.0
+
+- git:
+    repo=https://github.com/OCA/web.git
+    dest=/opt/common/addons/web
+    version=8.0
+
+- git:
+    repo=https://github.com/OCA/crm.git
+    dest=/opt/common/addons/sueltos
+    version=8.0
+
+- git:
+    repo=https://github.com/OCA/rma.git
+    dest=/opt/common/addons/rma
+    version=8.0
+
+- git:
+    repo=https://github.com/OCA/reporting-engine.git
+    dest=/opt/common/addons/reporting-engine
+    version=8.0
+
+- git:
+    repo=https://github.com/OCA/product-attribute.git
+    dest=/opt/common/addons/product-attribute
+    version=8.0
+
+- git:
+    repo=https://github.com/OCA/pos.git
+    dest=/opt/common/addons/pos
+    version=8.0
+
+- git:
+    repo=https://github.com/OCA/partner-contact.git
+    dest=/opt/common/addons/partner-contact
+    version=8.0
+
+- git:
+    repo=https://github.com/odoomrp/odoomrp-wip.git
+    dest=/opt/common/addons/odoomrp-wip
+    version=8.0
+
+- git:
+    repo=https://github.com/OCA/multi-company.git
+    dest=/opt/common/addons/multi-company
+    version=8.0
+
+- git:
+    repo=https://github.com/OCA/manufacture.git
+    dest=/opt/common/addons/manufacture
+    version=8.0
+
+- git:
+    repo=https://github.com/OCA/management-system.git
+    dest=/opt/common/addons/management-system
+    version=8.0
+
+- git:
+    repo=https://github.com/OCA/commission.git
+    dest=/opt/Upgrade/common/commission
+    version=8.0
+
+- git:
+    repo=https://github.com/OCA/purchase-workflow.git
+    dest=/opt/Upgrade/common/purchase-workflow
+    version=8.0
+
+- git:
+    repo=https://github.com/OCA/sale-workflow.git
+    dest=/opt/Upgrade/common/sale-workflow
+    version=8.0
+
+- git:
+    repo=https://github.com/OCA/server-tools.git
+    dest=/opt/Upgrade/common/server-tools
+    version=8.0
+
+- git:
+    repo=https://github.com/OCA/stock-logistics-warehouse.git
+    dest=/opt/Upgrade/common/stock-logistics-warehouse
+    version=8.0
+
+- git:
+    repo=https://github.com/OCA/stock-logistics-workflow.git
+    dest=/opt/Upgrade/common/stock-logistics-workflow
+    version=8.0
+
+- git:
+    repo=https://github.com/OCA/account-financial-reporting
+    dest=/opt/common/addons/account-financial-reporting
+    version=8.0
+
+- git:
+    repo=https://github.com/OCA/account-financial-tools.git
+    dest=/opt/common/addons/account-financial-tools
+    version=8.0
+
+- git:
+    repo=https://github.com/OCA/account-invoice-reporting.git
+    dest=/opt/common/addons/account-invoice-reporting
+    version=8.0
+
+- git:
+    repo=https://github.com/OCA/account-invoicing.git
+    dest=/opt/common/addons/account-invoicing
+    version=8.0
+
+- git:
+    repo=https://github.com/OCA/account-payment.git
+    dest=/opt/common/addons/account-payment
+    version=8.0
+
+- git:
+    repo=https://github.com/OCA/bank-payment.git
+    dest=/opt/common/addons/bank-payment
+    version=8.0
+- git:
+    repo=https://github.com/OCA/bank-statement-import.git
+    dest=/opt/common/addons/bank-statement-import
+    version=8.0
+- git:
+    repo=https://github.com/OCA/crm.git
+    dest=/opt/common/addons/crm
+    version=8.0
+- git:
+    repo=https://github.com/OCA/knowledge.git
+    dest=/opt/common/addons/knowledge
+    version=8.0
+- git:
+    repo=https://github.com/OCA/l10n-spain.git
+    dest=/opt/common/addons/l10n-spain
+    version=8.0
+
+#     "/opt/common/addons/ledyspa": "https://gonxi@bitbucket.org/gonxi/ledyspa.git",
+- git:
+    repo=git@bitbucket.org:gonxi/ledyspa.git
+    dest=/opt/common/addons/ledyspa
+    key_file=/home/odoo/.ssh/id_rsa
+    accept_hostkey=True
+
+- name: Cambiar propietario del directorio common
+  file: path=/opt/common state=directory
+        owner={{ odoo_user }} group={{ odoo_user }} recurse=yes
+# El directorio Upgrade hace falta aquí o es fruto de un lío?
+- name: Cambiar propietario del directorio Upgrade
+  file: path=/opt/Upgrade state=directory
+        owner={{ odoo_user }} group={{ odoo_user }} recurse=yes

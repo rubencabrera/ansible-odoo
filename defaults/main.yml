@@ -1,13 +1,13 @@
-odoo_service: odoo
+odoo_service: odoo-server
 odoo_version: 8.0
 odoo_user: odoo
 odoo_user_passwd: odoo
 odoo_logdir: "/var/log/{{ odoo_user }}"
-odoo_workdir: "/home/{{ odoo_user }}/odoo"
-odoo_rootdir: "/home/{{ odoo_user }}/odoo/server"
+odoo_workdir: "/opt/odoo"
+odoo_rootdir: "/opt/odoo"
 odoo_init: True
-odoo_databases: []      # [{name: prod, locale: 'en_US.UTF-8'}]
-odoo_config_file: "/home/{{ odoo_user }}/{{ odoo_service }}.conf"
+odoo_databases: [{name: odoo, locale: 'es_ES.UTF-8'}]      # [{name: prod, locale: 'en_US.UTF-8'}]
+odoo_config_file: "/etc/{{ odoo_service }}.conf"
 odoo_force_config: False
 odoo_repo_type: git     # git or hg
 odoo_repo_url: https://github.com/odoo/odoo.git
@@ -15,33 +15,33 @@ odoo_repo_dest: "{{ odoo_rootdir }}"
 odoo_repo_rev: 8.0
 
 # Configuration options
-odoo_config_addons_path: "/home/{{ odoo_user }}/odoo/server/addons,/home/{{ odoo_user }}/odoo/server/openerp/addons"
-odoo_config_admin_passwd: admin
-odoo_config_auto_reload: False
+odoo_config_addons_path: "/opt/Upgrade/common/acysos,/opt/common/addons/web,/opt/common/addons/sueltos,/opt/common/addons/rma,/opt/common/addons/reporting-engine,/opt/common/addons/product-attribute,/opt/common/addons/pos,/opt/common/addons/partner-contact,/opt/common/addons/odoomrp-wip,/opt/common/addons/multi-company,/opt/common/addons/manufacture,/opt/common/addons/management-system,/opt/Upgrade/common/commission,/opt/Upgrade/common/purchase-workflow,/opt/Upgrade/common/sale-workflow,/opt/Upgrade/common/server-tools,/opt/Upgrade/common/stock-logistics-warehouse,/opt/Upgrade/common/stock-logistics-workflow,/opt/common/addons/account-financial-reporting,/opt/common/addons/account-financial-tools,/opt/common/addons/account-invoice-reporting,/opt/common/addons/account-invoicing,/opt/common/addons/account-payment,/opt/common/addons/bank-payment,/opt/common/addons/bank-statement-import,/opt/common/addons/crm,/opt/common/addons/knowledge,/opt/common/addons/l10n-spain,/opt/common/addons/ledyspa,{{ odoo_rootdir }}/addons,{{ odoo_rootdir }}/openerp/addons"
+odoo_config_admin_passwd: b15n35m4rt
+odoo_config_auto_reload: True
 odoo_config_csv_internal_sep: ','
-odoo_config_data_dir: "/home/{{ odoo_user }}/.local/share/Odoo"
+odoo_config_data_dir: "{{ odoo_rootdir }}/.local/share/Odoo"
 odoo_config_db_host: False
 odoo_config_db_host_user: "{{ ansible_ssh_user }}"
 odoo_config_db_maxconn: 64
 odoo_config_db_name: False
-odoo_config_db_passwd: False
+odoo_config_db_passwd: b15n35m4rt
 odoo_config_db_port: False
 odoo_config_db_template: template1
 odoo_config_db_user: odoo
-odoo_config_dbfilter: '.*'
+odoo_config_dbfilter: '^%d'
 odoo_config_debug_mode: False
 odoo_config_pidfile: None
 odoo_config_proxy_mode: False
 odoo_config_email_from: False
 odoo_config_geoip_database: /usr/share/GeoIP/GeoLiteCity.dat
-odoo_config_limit_memory_hard: 805306368
-odoo_config_limit_memory_soft: 671088640
+odoo_config_limit_memory_hard: 2684354560
+odoo_config_limit_memory_soft: 2147483648
 odoo_config_limit_time_cpu: 60
 odoo_config_limit_time_real: 120
 odoo_config_list_db: True
 odoo_config_log_db: False
 odoo_config_log_level: info
-odoo_config_logfile: None
+odoo_config_logfile: "{{ odoo_logdir }}/{{ odoo_service }}.log"
 odoo_config_logrotate: False
 odoo_config_longpolling_port: 8072
 odoo_config_osv_memory_age_limit: 1.0
@@ -67,6 +67,5 @@ odoo_config_xmlrpc_port: 8069
 odoo_config_xmlrpcs: True
 odoo_config_xmlrpcs_interface: ''
 odoo_config_xmlrpcs_port: 8071
-
 # Extra options
 odoo_user_sshkeys: False    # ../../path/to/public_keys/*
