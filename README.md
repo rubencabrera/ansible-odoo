@@ -3,6 +3,11 @@
 Ansible role to install Odoo from a Git or Mercurial repository,
 and configure it.
 
+# Inventario
+
+El archivo de inventario no está incluido en este repositorio, sí se hace referencia al host ledyspa,
+pero si no se tiene configurado eso no va a funcionar. 
+
 ## Systems supported
 
 - Debian Wheezy (7.0)
