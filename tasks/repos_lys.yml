@@ -1,4 +1,12 @@
-# Repositorios para ledyspa
+# Tarea para los repositorios del servidor de ledyspa
+# TODO: incluir el atributo depth en los repositorios para ahorrar BASTANTE ESPACIO
+#     Parece que si se indica el depth después de que el repo ya exista da error:
+#     fatal: [ledyspa]: FAILED! => {"changed": false, "cmd": ["/usr/bin/git", "fetch",
+#             "--depth", "1", "origin", "+refs/heads/8.0:refs/heads/8.0"],
+#             "failed": true, "msg": "Failed to download remote objects and refs:
+#             fatal: Refusing to fetch into current branch refs/heads/8.0 of non-bare
+#             repository\nUnexpected end of command stream\n"}
+
 ---
 - git: repo=https://github.com/acysos/odoo-addons.git dest=/opt/Upgrade/common/acysos version=8.0
 
@@ -12,35 +20,42 @@
     dest=/opt/common/addons/sueltos
     version=8.0
 
+
 - git:
     repo=https://github.com/OCA/rma.git
     dest=/opt/common/addons/rma
     version=8.0
+
 
 - git:
     repo=https://github.com/OCA/reporting-engine.git
     dest=/opt/common/addons/reporting-engine
     version=8.0
 
+
 - git:
     repo=https://github.com/OCA/product-attribute.git
     dest=/opt/common/addons/product-attribute
     version=8.0
+
 
 - git:
     repo=https://github.com/OCA/pos.git
     dest=/opt/common/addons/pos
     version=8.0
 
+
 - git:
     repo=https://github.com/OCA/partner-contact.git
     dest=/opt/common/addons/partner-contact
     version=8.0
 
+
 - git:
     repo=https://github.com/odoomrp/odoomrp-wip.git
     dest=/opt/common/addons/odoomrp-wip
     version=8.0
+
 
 - git:
     repo=https://github.com/OCA/multi-company.git
@@ -72,10 +87,6 @@
     dest=/opt/Upgrade/common/sale-workflow
     version=8.0
 
-- git:
-    repo=https://github.com/OCA/server-tools.git
-    dest=/opt/Upgrade/common/server-tools
-    version=8.0
 
 - git:
     repo=https://github.com/OCA/stock-logistics-warehouse.git
@@ -133,12 +144,24 @@
     dest=/opt/common/addons/l10n-spain
     version=8.0
 
+- git:
+    repo=https://github.com/OCA/server-tools.git
+    dest=/opt/common/addons/server-tools
+    version=8.0
+
+
+
 #     "/opt/common/addons/ledyspa": "https://gonxi@bitbucket.org/gonxi/ledyspa.git",
 - git:
     repo=git@bitbucket.org:gonxi/ledyspa.git
     dest=/opt/common/addons/ledyspa
     key_file=/home/odoo/.ssh/id_rsa
     accept_hostkey=True
+
+- git:
+    repo=https://github.com/OCA/bank-statement-reconcile.git
+    dest=/opt/common/addons/bank-statement-reconcile
+    version=8.0
 
 - name: Cambiar propietario del directorio common
   file: path=/opt/common state=directory
