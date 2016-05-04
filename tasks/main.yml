@@ -1,7 +1,7 @@
 ---
 
 - name: Install Odoo dependencies
-  action: apt pkg=python-dev,xfonts-utils,python-cups,python-jinja2,python-unicodecsv,python-pyparsing,python-libxslt1,python-psycopg2,python-geoip,xfonts-base,python-apt,xfonts-75dpi,python-pybabel,python-simplejson,python-lxml,python-pyinotify,python-tz,python-imaging,python-yaml,python-reportlab,python-mako,python-pychart,python-werkzeug,python-dateutil,python-unittest2,python-mock,python-openid,python-docutils,python-feedparser,python-gdata,python-jinja2,python-psutil,python-pydot,python-webdav,python-vatnumber,python-vobject,python-xlwt,python-ldap,python-openssl,python-egenix-mxdatetime,python-zsi,python-requests,python-pypdf,python-decorator,python-passlib,python-babel,python-gevent
+  action: apt pkg=git,python-dev,xfonts-utils,python-cups,python-jinja2,python-unicodecsv,python-pyparsing,python-libxslt1,python-psycopg2,python-geoip,xfonts-base,python-apt,xfonts-75dpi,python-pybabel,python-simplejson,python-lxml,python-pyinotify,python-tz,python-imaging,python-yaml,python-reportlab,python-mako,python-pychart,python-werkzeug,python-dateutil,python-unittest2,python-mock,python-openid,python-docutils,python-feedparser,python-gdata,python-jinja2,python-psutil,python-pydot,python-webdav,python-vatnumber,python-vobject,python-xlwt,python-ldap,python-openssl,python-egenix-mxdatetime,python-zsi,python-requests,python-pypdf,python-decorator,python-passlib,python-babel,python-gevent
           state=installed
           update_cache=yes
   tags:
@@ -19,6 +19,9 @@
 - name: Instalar locale para el sistema
   locale_gen: name=es_ES.UTF-8 state=present
 
+- name: Instalar openupgradelib (dependencia odoomrp-wip)
+  pip: name=openupgradelib
+  
 - name: Install Odoo dependencies (from PyPi)
   pip: name=psycogreen
   tags:
