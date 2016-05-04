@@ -1,17 +1,14 @@
 # Odoo
 
-Ansible role to install Odoo from a Git or Mercurial repository,
-and configure it.
+Rol de ansible para instalar el Odoo de ledyspa.
 
 # Inventario
 
 El archivo de inventario no está incluido en este repositorio, sí se hace referencia al host ledyspa,
-pero si no se tiene configurado eso no va a funcionar. 
+pero si no se tiene configurado eso no va a funcionar.
 
 ## Systems supported
 
-- Debian Wheezy (7.0)
-- Ubuntu Precise (12.04)
 - Ubuntu Trusty (14.04)
 
 ## Variables
