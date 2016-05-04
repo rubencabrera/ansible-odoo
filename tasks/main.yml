@@ -19,9 +19,12 @@
 - name: Instalar locale para el sistema
   locale_gen: name=es_ES.UTF-8 state=present
 
-- name: Instalar openupgradelib (dependencia odoomrp-wip)
+- name: Instalar openupgradelib (dependencia pip de odoomrp-wip)
   pip: name=openupgradelib
-  
+
+- name: Instalar unidecode (pip)
+  pip: name=unidecode
+
 - name: Install Odoo dependencies (from PyPi)
   pip: name=psycogreen
   tags:

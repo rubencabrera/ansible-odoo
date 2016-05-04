@@ -159,7 +159,7 @@
     dest=/opt/common/addons/knowledge
     version=8.0
 
-- name: Repo de la localización española (OCA)
+- name: Repo l10n-spain de la (OCA)
   git:
     repo=https://github.com/OCA/l10n-spain.git
     dest=/opt/common/addons/l10n-spain
@@ -175,6 +175,10 @@
 # Este repositorio necesita una llave privada, la ubicación es relativa al
 # equipo en el que se va a instalar el repositorio.
 
+# TODO: meter la carpeta home del usuario odoo como variable y revisar esta tarea.
+- name: Crear carpeta de llaves.
+  file: path=/home/odoo/.ssh state=directory
+        owner={{ odoo_user }} group={{ odoo_user }} force=no
 
 - name: Copiar la llave de deploy de Bitbucket
   copy: src="/home/ruben/.ssh/ledyspa_test.pub"
