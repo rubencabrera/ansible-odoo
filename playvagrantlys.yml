@@ -1,0 +1,48 @@
+---
+# Actualizar la cache de apt-get antes de llamar al rol de nginx o las máquinas
+# de vagrant petan (las de producción no han petado todavía)
+- hosts: vagrantlys
+  # Run the equivalent of "apt-get update" as a separate step
+  tasks:
+    - apt: update_cache=yes
+
+- hosts: vagrantlys
+  vars_files:
+    - defaults/variables_vagrantlys.yml
+    - defaults/nginx.yml
+    - defaults/main.yml
+
+  roles:
+    # Este es el rol que maneja y configura el nginx por nosotros, con los
+    # datos pasados desde defaults/nginx.yml
+    - role: jdauphant.nginx
+    - {role: jdauphant.nginx,
+     nginx_http_params: ["client_max_body_size 256M", "error_log /var/log/nginx/error.log"]}
+
+  tasks:
+    - include: tasks/main.yml
+
+- hosts: vagrantlys
+  sudo: yes
+  sudo_user: postgres
+  vars_files:
+    - defaults/variables_vagrantlys.yml
+    - defaults/main.yml
+  tasks:
+    - include: tasks/postgres.yml
+
+# Comprueba que existen y están actualizados los repos de vagrantlys
+- hosts: vagrantlys
+  vars_files:
+    - defaults/variables_vagrantlys.yml
+    - defaults/main.yml
+  tasks:
+    - include: tasks/repos_lys.yml
+
+# Configura el servicio de odoo
+- hosts: vagrantlys
+  vars_files:
+    - defaults/variables_vagrantlys.yml
+    - defaults/main.yml
+  tasks:
+    - include: tasks/servicios.yml

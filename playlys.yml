@@ -1,0 +1,43 @@
+---
+- hosts: ledyspa
+  # Run the equivalent of "apt-get update" as a separate step
+  tasks:
+    - apt: update_cache=yes
+    
+- hosts: ledyspa
+  vars_files:
+    - defaults/variables_lys.yml
+    - defaults/nginx.yml
+    - defaults/main.yml
+
+  roles:
+    # Este es el rol que maneja y configura el nginx por nosotros, con los
+    # datos pasados desde defaults/nginx.yml
+    - role: jdauphant.nginx
+    - {role: jdauphant.nginx,
+     nginx_http_params: ["client_max_body_size 256M", "error_log /var/log/nginx/error.log"]}
+
+  tasks:
+    - include: tasks/main.yml
+
+- hosts: ledyspa
+  sudo: yes
+  sudo_user: postgres
+  vars_files:
+    - defaults/main.yml
+  tasks:
+    - include: tasks/postgres.yml
+
+# Comprueba que existen y están actualizados los repos de ledyspa
+- hosts: ledyspa
+  vars_files:
+    - defaults/main.yml
+  tasks:
+    - include: tasks/repos_lys.yml
+
+# Configura el servicio de odoo
+- hosts: ledyspa
+  vars_files:
+    - defaults/main.yml
+  tasks:
+    - include: tasks/servicios.yml
