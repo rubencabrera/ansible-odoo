@@ -55,7 +55,7 @@
     lc_ctype: "{{ item.locale }}"
     template: "template0"
     state: present
-  with_items: odoo_databases
+  with_items: {{ odoo_databases }}
   when: odoo_config_db_host in [False, 'localhost', '127.0.0.1']
   tags:
     - odoo
@@ -77,7 +77,7 @@
 
 - name: Local PostgreSQL - Active the 'unaccent' extension on databases
   shell: "psql {{ item.name }} -c 'CREATE EXTENSION IF NOT EXISTS \"unaccent\";'"
-  with_items: odoo_databases
+  with_items: {{ odoo_databases }}
   changed_when: False
   when: odoo_config_db_host in [False, 'localhost', '127.0.0.1']
         and odoo_config_unaccent
