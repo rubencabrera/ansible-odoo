@@ -176,7 +176,7 @@
 # equipo en el que se va a instalar el repositorio.
 
 
-- name: Copiar la llave pública de deploy de Bitbucket
+- name: Copiar la llave de deploy de Bitbucket
   copy: src="/home/ruben/.ssh/ledyspa_test.pub"
         dest=/home/odoo/.ssh/ledyspa_test.pub
         mode=0644
@@ -190,7 +190,7 @@
         owner=odoo
         group=odoo
 
-- name: Repo específico de ledyspa (bitbucket)
+- name: Repo privado de ledyspa (bitbucket)
   git:
     repo=git@bitbucket.org:gonxi/ledyspa.git
     dest=/opt/common/addons/ledyspa
