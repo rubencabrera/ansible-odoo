@@ -1,0 +1,22 @@
+---
+
+repos_oca: "/opt/repos/oca"
+repositorios:
+  - "stock-logistics-workflow"
+  - "account-financial-reporting"
+  - "server-tools"
+  - "web"
+  - "reporting-engine"
+  - "partner-contact"
+  - "website"
+  - "sale-workflow"
+  - "stock-logistics-warehouse"
+  - "stock-logistics-barcode"
+  - "social"
+  - "rma"
+  - "account-payment"
+  - "account-financial-tools"
+  - "account-invoicing"
+  - "purchase-workflow"
+  - "project"
+  - "product-variant"

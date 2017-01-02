@@ -13,6 +13,7 @@
 #     - odoo_postgresql
 
 - name: Local PostgreSQL - Add the Odoo user
+  become: true
   become_user: postgres
   postgresql_user: name={{ odoo_config_db_user }}
                    role_attr_flags=CREATEDB,NOSUPERUSER
@@ -35,6 +36,8 @@
 #     - odoo_postgresql
 
 - name: Local PostgreSQL - Set the Odoo user password
+  become: true
+  become_user: postgres
   postgresql_user: name={{ odoo_config_db_user }}
                    password={{ odoo_config_db_passwd }}
   when: odoo_config_db_host in [False, 'localhost', '127.0.0.1']
@@ -45,14 +48,15 @@
 
 # Crear bases de datos. Esto lo comentamos porque vamos a importar un backup.
 - name: Local PostgreSQL - Create databases
-  sudo: yes
-  sudo_user: postgres
+  become: true
+  become_user: postgres
   postgresql_db:
     name: "{{ item.name }}"
     owner: "{{ odoo_config_db_user }}"
     encoding: 'UTF-8'
     lc_collate: "{{ item.locale}}"
     lc_ctype: "{{ item.locale }}"
+    # TODO: confirmar que es este template, ojo.
     template: "template0"
     state: present
   with_items: "{{ odoo_databases }}"

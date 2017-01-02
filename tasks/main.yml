@@ -98,6 +98,9 @@
   when: odoo_version == 8.0
   tags:
     - odoo
+      # Esto hay que pensarlo porque el home del usuario odoo
+      # no está creado en el momento de llamar a básicos en 
+      # el playbook de odoo
     - odoo_config
 
 - name: Copy Odoo init script (8.0)
@@ -109,6 +112,7 @@
   tags:
     - odoo
     - odoo_config
+
 # [/ ODOO 8.0 ]
 
 # - name: Set SSH public keys for the Odoo user
@@ -120,3 +124,13 @@
 #   tags:
 #     - odoo
 #     - odoo_ssh
+- name: Repositorios OCA
+  include: reposoca.yml
+
+- name: Postgres tasks
+  include: postgres.yml
+
+- include: servicios.yml
+  #vars_files:
+    #- vars/addonspath.yml
+    #- vars/main.yml

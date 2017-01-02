@@ -1,0 +1,17 @@
+---
+
+# Tareas para la creación y gestión de los repositorios de la comunidad.
+
+- include_vars: ../vars/repos.yml
+
+- name: Directorio repositorios
+  file: path={{ repos_oca }} state=directory
+
+- name: Clonar repsitorios oca
+  git: repo=https://github.com/oca/{{ item }}.git depth=1 dest={{ repos_oca }}/{{ item }} version="8.0"
+  with_items:
+    - "{{ repositorios }}"
+
+- name: Permisos repositorios
+  file: path={{ repos_oca }} state=directory
+        owner={{ odoo_user }} group={{ odoo_user }} recurse=yes
