@@ -16,7 +16,7 @@ odoo_repo_dest: "{{ odoo_rootdir }}"
 odoo_repo_rev: 8.0
 
 # Configuration options
-odoo_config_addons_path: "{{ addons_path|join(',') }}"
+odoo_config_addons_path: "{{ addons_path }}"
 odoo_config_admin_passwd: praxya2016
 odoo_config_auto_reload: True
 odoo_config_csv_internal_sep: ','

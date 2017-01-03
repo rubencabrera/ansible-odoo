@@ -8,10 +8,14 @@
   file: path={{ path_repos_oca }} state=directory
 
 - name: Clonar repsitorios oca
-  git: repo=https://github.com/oca/{{ item }}.git depth=1 dest={{ path_repos_oca }}/{{ item }} version="8.0"
-  with_items:
-    - "{{ repositorios_oca }}"
+  git:
+    repo: "{{ item.url }}" 
+    depth: 1 
+    dest: "{{ path_repos_oca }}/{{ item.name }}" 
+    version: "8.0"
+  with_items: "{{ repositorios_oca }}"
 
 - name: Permisos repositorios
   file: path={{ path_repos_oca }} state=directory
         owner={{ odoo_user }} group={{ odoo_user }} recurse=yes
+

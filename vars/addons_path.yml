@@ -1,4 +1,4 @@
-addons_path: "{{ path_repos_oca  }}/{{ item }}"
+#addons_path: "{{ path_repos_oca  }}/{{ item }}"
   #with_items:
   #- "{{ repositorios_oca }}"
     

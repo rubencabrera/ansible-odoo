@@ -96,6 +96,8 @@
   file: path={{ odoo_workdir }} state=directory
         owner={{ odoo_user }} group={{ odoo_user }} recurse=yes
 
+- name: Repositorios OCA
+  include: reposoca.yml
 
 # [ ODOO 8.0 ]
 - name: Copy Odoo configuration file (8.0)
@@ -132,13 +134,8 @@
 #   tags:
 #     - odoo
 #     - odoo_ssh
-- name: Repositorios OCA
-  include: reposoca.yml
 
 - name: Postgres tasks
   include: postgres.yml
 
 - include: servicios.yml
-  #vars_files:
-    #- vars/addonspath.yml
-    #- vars/main.yml
