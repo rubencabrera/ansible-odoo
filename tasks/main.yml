@@ -1,4 +1,7 @@
 ---
+- name: Incluir variables del rol
+  include_vars:
+    dir: 'vars'
 
 - name: Install Odoo dependencies
   action: apt pkg=git,python-dev,xfonts-utils,python-cups,python-jinja2,python-unicodecsv,python-pyparsing,python-libxslt1,python-psycopg2,python-geoip,xfonts-base,python-apt,xfonts-75dpi,python-pybabel,python-simplejson,python-lxml,python-pyinotify,python-tz,python-imaging,python-yaml,python-reportlab,python-mako,python-pychart,python-werkzeug,python-dateutil,python-unittest2,python-mock,python-openid,python-docutils,python-feedparser,python-gdata,python-jinja2,python-psutil,python-pydot,python-webdav,python-vatnumber,python-vobject,python-xlwt,python-ldap,python-openssl,python-egenix-mxdatetime,python-zsi,python-requests,python-pypdf,python-decorator,python-passlib,python-babel,python-gevent
@@ -7,6 +10,7 @@
   tags:
     - odoo
     - odoo_packages
+
 - name: Instalar wkhtmltopdf
   action: apt deb=http://download.gna.org/wkhtmltopdf/0.12/0.12.1/wkhtmltox-0.12.1_linux-trusty-amd64.deb
 - name: Install common tools
@@ -45,6 +49,8 @@
   tags:
     - odoo
     - odoo_user
+  #vars_files:
+    #- main.yml
 
 - name: Create log directory
   file: path={{ odoo_logdir }} state=directory
@@ -52,6 +58,8 @@
   tags:
     - odoo
     - odoo_log
+  #vars_files:
+    #- main.yml
 
 - name: Project repository exists? (Mercurial)
   stat: path={{ odoo_repo_dest }}
