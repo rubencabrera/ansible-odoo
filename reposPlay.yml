@@ -1,5 +1,0 @@
----
-# Comprueba que existen y están actualizados los repos de ledyspa
-- hosts: ledyspa
-  tasks:
-    - include: tasks/repos_lys.yml
