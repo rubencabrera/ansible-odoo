@@ -20,6 +20,9 @@
     - odoo
     - odoo_packages
 
+#- name: Eliminar locale con LATIN para evitar problemas.
+  #locale_gen: name=en_US.ISO-8859-1 state=absent
+
 - name: Instalar locale para el sistema
   locale_gen: name=es_ES.UTF-8 state=present
 
@@ -37,8 +40,7 @@
 
 
 - name: Instalar postgres
-  action: apt pkg=postgresql
-          state=installed
+  apt: pkg=postgresql state=installed
   tags:
     - odoo
     - odoo_packages
