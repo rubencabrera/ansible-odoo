@@ -19,7 +19,7 @@ odoo_repo_rev: 8.0
 odoo_config_addons_path: "{{ addons_path }}"
 odoo_config_admin_passwd: praxya2016
 odoo_config_auto_reload: True
-odoo_config_csv_internal_sep: ','
+odoo_config_csv_internal_sep: ';'
 odoo_config_data_dir: "{{ odoo_rootdir }}/.local/share/Odoo"
 odoo_config_db_host: False
 odoo_config_db_host_user: "{{ ansible_ssh_user }}"
@@ -59,7 +59,7 @@ odoo_config_smtp_user: False
 odoo_config_syslog: False
 odoo_config_timezone: False
 odoo_config_translate_modules: ['all']
-odoo_config_unaccent: False
+odoo_config_unaccent: True
 odoo_config_without_demo: False
 odoo_config_workers: 0
 odoo_config_xmlrpc: True
