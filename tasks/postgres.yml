@@ -83,6 +83,8 @@
   shell: "psql {{ item.name }} -c 'CREATE EXTENSION IF NOT EXISTS \"unaccent\";'"
   with_items: "{{ odoo_databases }}"
   changed_when: False
+  become: True
+  become_user: postgres
   when: odoo_config_db_host in [False, 'localhost', '127.0.0.1']
         and odoo_config_unaccent
   tags:
