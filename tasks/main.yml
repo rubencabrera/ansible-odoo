@@ -3,6 +3,12 @@
   include_vars:
     dir: 'vars'
 
+- name: Rol de nginx
+  include_role:
+    name: nginx
+  vars:
+    nginx_http_params: ["client_max_body_size 256M", "error_log /var/log/nginx/error.log"]
+
 - name: Install Odoo dependencies
   action: apt pkg=git,python-dev,xfonts-utils,python-cups,python-jinja2,python-unicodecsv,python-pyparsing,python-libxslt1,python-psycopg2,python-geoip,xfonts-base,python-apt,xfonts-75dpi,python-pybabel,python-simplejson,python-lxml,python-pyinotify,python-tz,python-imaging,python-yaml,python-reportlab,python-mako,python-pychart,python-werkzeug,python-dateutil,python-unittest2,python-mock,python-openid,python-docutils,python-feedparser,python-gdata,python-jinja2,python-psutil,python-pydot,python-webdav,python-vatnumber,python-vobject,python-xlwt,python-ldap,python-openssl,python-egenix-mxdatetime,python-zsi,python-requests,python-pypdf,python-decorator,python-passlib,python-babel,python-gevent
           state=installed
@@ -51,8 +57,6 @@
   tags:
     - odoo
     - odoo_user
-  #vars_files:
-    #- main.yml
 
 - name: Create log directory
   file: path={{ odoo_logdir }} state=directory
@@ -60,8 +64,6 @@
   tags:
     - odoo
     - odoo_log
-  #vars_files:
-    #- main.yml
 
 - name: Project repository exists? (Mercurial)
   stat: path={{ odoo_repo_dest }}
@@ -69,18 +71,6 @@
   tags:
     - odoo
     - odoo_project
-
-# No nos interesa mercurial
-# - name: Clone project repository (Mercurial)
-#   sudo_user: "{{ odoo_user }}"
-#   hg:   repo={{ odoo_repo_url }}
-#         dest={{ odoo_repo_dest }}
-#         revision={{ odoo_repo_rev }}
-#         force=no
-#   when: odoo_repo_type == 'hg' and project_path.stat.exists == False and odoo_repo_url
-#   tags:
-#     - odoo
-#     - odoo_project
 
 - name: Clone project repository (Git)
   git:  repo={{ odoo_repo_url }}
@@ -102,6 +92,13 @@
   include: reposoca.yml
 
 # [ ODOO 8.0 ]
+- name: Create config directory
+  file: path={{ odoo_config_path }} state=directory
+        owner={{ odoo_user }} group={{ odoo_user }} force=no
+  tags:
+    - odoo
+    - odoo_log
+
 - name: Copy Odoo configuration file (8.0)
   template: src=odoo-server-v80.conf dest={{ odoo_config_file }}
         owner={{ odoo_user }} group={{ odoo_user }} mode=0600
@@ -110,9 +107,6 @@
   when: odoo_version == 8.0
   tags:
     - odoo
-      # Esto hay que pensarlo porque el home del usuario odoo
-      # no está creado en el momento de llamar a básicos en 
-      # el playbook de odoo
     - odoo_config
 
 - name: Copy Odoo init script (8.0)
