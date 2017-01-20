@@ -9,6 +9,27 @@
   vars:
     nginx_http_params: ["client_max_body_size 256M", "error_log /var/log/nginx/error.log"]
 
+- name: Install common tools
+  package: name={{item}} state=latest
+  with_items:
+    - xauth
+    - python-pip
+
+- name: Install Odoo dependencies for CentOS
+  package: name={{item}} state=latest
+  with_items:
+    - python-devel
+    - babel
+    - libxslt1-python
+    - pychart
+    - pyparsing
+    - pytz
+    - pyOpenSSL
+    - python-inotify
+    - python-GeoIP
+    - pyPdf
+  when: ansible_distribution == 'CentOS'
+
 - name: Install Odoo dependencies
   package: name={{item}} state=latest
   with_items:
@@ -43,7 +64,6 @@
     - python-docutils
     - python-feedparser
     - python-gdata
-    - python-jinja2
     - python-psutil
     - python-pydot
     - python-webdav
@@ -60,51 +80,41 @@
     - python-passlib
     - python-babel
     - python-gevent
-  tags:
-    - odoo
-    - odoo_packages
+  when: ansible_distribution == 'Ubuntu'
 
-#- name: Install Odoo dependencies
-  #action: apt pkg=git,python-dev,xfonts-utils,python-cups,python-jinja2,python-unicodecsv,python-pyparsing,python-libxslt1,python-psycopg2,python-geoip,xfonts-base,python-apt,xfonts-75dpi,python-pybabel,python-simplejson,python-lxml,python-pyinotify,python-tz,python-imaging,python-yaml,python-reportlab,python-mako,python-pychart,python-werkzeug,python-dateutil,python-unittest2,python-mock,python-openid,python-docutils,python-feedparser,python-gdata,python-jinja2,python-psutil,python-pydot,python-webdav,python-vatnumber,python-vobject,python-xlwt,python-ldap,python-openssl,python-egenix-mxdatetime,python-zsi,python-requests,python-pypdf,python-decorator,python-passlib,python-babel,python-gevent
-          #state=installed
-          #update_cache=yes
-  #tags:
-    #- odoo
-    #- odoo_packages
-
-- name: Instalar wkhtmltopdf
+# TODO: condicionar según arquitectura y sistema operativo
+- name: Instalar wkhtmltopdf en Ubuntu 64 bits
   action: apt deb=http://download.gna.org/wkhtmltopdf/0.12/0.12.1/wkhtmltox-0.12.1_linux-trusty-amd64.deb
-- name: Install common tools
-  action: apt pkg=xauth,python-pip
-          state=installed install_recommends=yes
-  tags:
-    - odoo
-    - odoo_packages
 
-#- name: Eliminar locale con LATIN para evitar problemas.
-  #locale_gen: name=en_US.ISO-8859-1 state=absent
+  # TODO: esto es rpm!
+- name: Instalar wkhtmltopdf en Centos7
+  action: apt http://download.gna.org/wkhtmltopdf/0.12/0.12.1/wkhtmltox-0.12.1_linux-centos7-amd64.rpm
+  when: ansible_distribution == 'CentOS' and ansible_distribution_version == '7'
 
 - name: Instalar locale para el sistema
   locale_gen: name=es_ES.UTF-8 state=present
 
-- name: Instalar openupgradelib (dependencia pip de odoomrp-wip)
-  pip: name=openupgradelib
+- name: Instalar dependencias pip
+  pip: name={{ item }}
+  with_items: 
+    - openupgradelib
+    - unidecode
+    - psycogreen
+  when: ansible_distribution == 'CentOS'
 
-- name: Instalar unidecode (pip)
-  pip: name=unidecode
-
-- name: Install Odoo dependencies (from PyPi)
-  pip: name=psycogreen
-  tags:
-    - odoo
-    - odoo_packages
-
+- name: Dependencias pip para CentOS
+  pip: name={{ item }}
+  with_items: 
+    # Estos son los paquetes que fallan, pendiente de encontrar sustitutos:
+    - gdata
+    - pywebdav
+    - egenix-mx-base
+    - zsi
 
 - name: Instalar postgres
-  apt: pkg=postgresql state=installed
-  tags:
-    - odoo
-    - odoo_packages
+  package: name={{item}} state=latest
+  with_items:
+    - postgresql
 
 - name: Add Odoo system user
   user: name={{ odoo_user }} shell=/bin/bash
