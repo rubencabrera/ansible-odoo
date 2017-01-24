@@ -22,7 +22,8 @@
 
 
 # Instancia
-#- include_vars: ../vars/repos.yml
+# Definimos la ruta al fichero yml de los repos de instancia en el inventario
+- include_vars: "{{ ruta_repos_instancia }}"
 
 - name: Directorio repositorios instancia
   file: path={{ path_repos_instancia }} state=directory
