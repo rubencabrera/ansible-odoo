@@ -1,6 +1,6 @@
 # Odoo
 
-Rol de ansible para instalar el Odoo de ledyspa.
+Rol de ansible para instalar Odoo.
 
 # Inventario
 
