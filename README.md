@@ -4,8 +4,8 @@ Rol de ansible para instalar Odoo.
 
 # Inventario
 
-El archivo de inventario no está incluido en este repositorio, sí se hace referencia al host ledyspa,
-pero si no se tiene configurado eso no va a funcionar.
+El archivo de inventario no está incluido en este repositorio,
+si no se tiene configurado eso no va a funcionar.
 
 ## Systems supported
 
