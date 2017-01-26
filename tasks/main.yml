@@ -1,3 +1,4 @@
+# Tareas principales del rol odoo
 ---
 - name: Incluir variables del rol
   include_vars:
@@ -9,54 +10,22 @@
   vars:
     nginx_http_params: ["client_max_body_size 256M", "error_log /var/log/nginx/error.log"]
 
-- name: Install common tools
-  package: name={{item}} state=latest
-  with_items:
-    - xauth
-    - python-pip
-
-- name: Install Odoo dependencies for CentOS
-  package: name={{item}} state=latest
-  with_items:
-    - python-devel
-    - babel
-      # falla
-    - libxslt1-python
-    - pychart
-    - pyparsing
-    - pytz
-    - pyOpenSSL
-    - python-inotify
-    - python-GeoIP
-    - pyPdf
-  when: ansible_distribution == 'CentOS'
-
-- name: Install Odoo dependencies
+- name: Instalar dependencias comunes
   package: name={{item}} state=latest
   with_items:
     - git
-    - python-dev
-    - xfonts-utils
+    - xauth
+    - python-pip
     - python-cups
     - python-jinja2
     - python-unicodecsv
-    - python-pyparsing
-    - python-libxslt1
     - python-psycopg2
-    - python-geoip
-    - xfonts-base
-    - python-apt
-    - xfonts-75dpi
-    - python-pybabel
     - python-simplejson
     - python-lxml
-    - python-pyinotify
-    - python-tz
     - python-imaging
     - python-yaml
     - python-reportlab
     - python-mako
-    - python-pychart
     - python-werkzeug
     - python-dateutil
     - python-unittest2
@@ -64,28 +33,69 @@
     - python-openid
     - python-docutils
     - python-feedparser
-    - python-gdata
     - python-psutil
     - python-pydot
-    - python-webdav
     - python-vatnumber
     - python-vobject
     - python-xlwt
     - python-ldap
-    - python-openssl
-    - python-egenix-mxdatetime
-    - python-zsi
     - python-requests
-    - python-pypdf
     - python-decorator
     - python-passlib
     - python-babel
     - python-gevent
+
+- name: Install Odoo dependencies for CentOS
+  package: name={{item}} state=latest
+  with_items:
+    - python-devel
+    - babel
+    - libxslt
+    - pychart
+    - pyparsing
+    - pytz
+    - pyOpenSSL
+    - python-inotify
+    - python-GeoIP
+    - pyPdf
+      # buscar para centos
+    #- python-pyparsing
+    #- xfonts-utils
+    #- xfonts-base
+    #- python-apt
+    #- xfonts-75dpi
+  when: ansible_distribution == 'CentOS'
+
+- name: Install Odoo dependencies Ubuntu
+  package: name={{item}} state=latest
+  with_items:
+    - python-webdav
+    - python-gdata
+    - xfonts-75dpi
+    - python-apt
+    - xfonts-base
+    - python-pyparsing
+    - xfonts-utils
+    - python-dev
+    - python-libxslt1
+    - python-psycopg2
+    - python-geoip
+    - python-pybabel
+    - python-pyinotify
+    - python-tz
+    - python-pychart
+    - python-openssl
+    - python-egenix-mxdatetime
+    - python-pypdf
+    - python-babel
+    - python-zsi
   when: ansible_distribution == 'Ubuntu'
+
 
 # TODO: condicionar según arquitectura y sistema operativo
 - name: Instalar wkhtmltopdf en Ubuntu 64 bits
   action: apt deb=http://download.gna.org/wkhtmltopdf/0.12/0.12.1/wkhtmltox-0.12.1_linux-trusty-amd64.deb
+  when: ansible_distribution == 'Ubuntu'
 
   # TODO: esto es rpm!
 - name: Instalar wkhtmltopdf en Centos7
@@ -96,6 +106,7 @@
 
 - name: Instalar locale para el sistema
   locale_gen: name=es_ES.UTF-8 state=present
+  when: ansible_distribution == 'Ubuntu'
 
 - name: Instalar dependencias pip
   pip: name={{ item }}
@@ -103,9 +114,8 @@
     - openupgradelib
     - unidecode
     - psycogreen
-  when: ansible_distribution == 'CentOS'
 
-- name: Dependencias pip para CentOS
+- name: Dependencias pip adicionales para CentOS
   pip: name={{ item }}
   with_items: 
     # Estos son los paquetes que fallan, pendiente de encontrar sustitutos:
@@ -113,7 +123,7 @@
     - pywebdav
     - egenix-mx-base
     - zsi
-  when: ansible_distribution == 'CentOS' and ansible_distribution_version == '7'
+  when: ansible_distribution == 'CentOS'
 
 - name: Instalar postgres
   package: name={{item}} state=latest
@@ -157,7 +167,7 @@
   file: path={{ odoo_workdir }} state=directory
         owner={{ odoo_user }} group={{ odoo_user }} recurse=yes
 
-- name: Repositorios OCA
+- name: Repositorios
   include: reposoca.yml
 
 # [ ODOO 8.0 ]
