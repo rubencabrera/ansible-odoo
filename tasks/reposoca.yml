@@ -22,8 +22,6 @@
 
 
 # Instancia
-# Definimos la ruta al fichero yml de los repos de instancia en el inventario
-- include_vars: "{{ ruta_repos_instancia }}"
 
 - name: Directorio repositorios instancia
   file: path={{ path_repos_instancia }} state=directory
@@ -34,6 +32,7 @@
     depth: 1 
     dest: "{{ path_repos_instancia }}/{{ item.name }}" 
     version: "{{ item.version }}"
+    key_file: "{{ item.keyfile }}"
   with_items: "{{ repositorios_instancia }}"
 
 - name: Permisos repositorios
