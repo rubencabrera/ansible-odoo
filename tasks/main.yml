@@ -60,6 +60,7 @@
     - pyPdf
       # buscar para centos
     #- python-pyparsing
+    #- python-zsi
     #- xfonts-utils
     #- xfonts-base
     #- python-apt
@@ -122,7 +123,6 @@
     - gdata
     - pywebdav
     - egenix-mx-base
-    - zsi
   when: ansible_distribution == 'CentOS'
 
 - name: Instalar postgres
