@@ -17,6 +17,8 @@
   become_user: postgres
   postgresql_user: name={{ odoo_config_db_user }}
                    role_attr_flags=CREATEDB,NOSUPERUSER
+  vars:
+    ansible_ssh_pipelining: true
   when: odoo_config_db_host in [False, 'localhost', '127.0.0.1']
   tags:
     - odoo
@@ -79,9 +81,8 @@
 #     - odoo
 #     - odoo_postgresql
 
-- name: Local PostgreSQL - Active the 'unaccent' extension on databases
-  shell: "psql {{ item.name }} -c 'CREATE EXTENSION IF NOT EXISTS \"unaccent\";'"
-  with_items: "{{ odoo_databases }}"
+- name: Local PostgreSQL - Active the unaccent extension on ALL databases
+  shell: "psql -c 'CREATE EXTENSION IF NOT EXISTS \"unaccent\" schema pg_catalog;'"
   changed_when: False
   become: True
   become_user: postgres
@@ -90,3 +91,15 @@
   tags:
     - odoo
     - odoo_postgresql
+
+#- name: Local PostgreSQL - Active the unaccent extension on databases
+  #shell: "psql {{ item.name }} -c 'CREATE EXTENSION IF NOT EXISTS \"unaccent\";'"
+  #with_items: "{{ odoo_databases }}"
+  #changed_when: False
+  #become: True
+  #become_user: postgres
+  #when: odoo_config_db_host in [False, 'localhost', '127.0.0.1']
+        #and odoo_config_unaccent
+  #tags:
+    #- odoo
+    #- odoo_postgresql
