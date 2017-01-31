@@ -98,7 +98,7 @@
   action: apt deb=http://download.gna.org/wkhtmltopdf/0.12/0.12.1/wkhtmltox-0.12.1_linux-trusty-amd64.deb
   when: ansible_distribution == 'Ubuntu'
 
-  # TODO: esto es rpm!
+  # TODO: la condición de version == '7' parece no cumplirse
 - name: Instalar wkhtmltopdf en Centos7
   yum:
     name: http://download.gna.org/wkhtmltopdf/0.12/0.12.1/wkhtmltox-0.12.1_linux-centos7-amd64.rpm
@@ -119,7 +119,6 @@
 - name: Dependencias pip adicionales para CentOS
   pip: name={{ item }}
   with_items: 
-    # Estos son los paquetes que fallan, pendiente de encontrar sustitutos:
     - gdata
     - pywebdav
     - egenix-mx-base
@@ -160,23 +159,26 @@
         depth=1
   when: odoo_repo_type == 'git' and odoo_repo_url
   tags:
-    - odoo
-    - odoo_project
+    - core
 
 - name: Cambiar propietario del directorio
   file: path={{ odoo_workdir }} state=directory
         owner={{ odoo_user }} group={{ odoo_user }} recurse=yes
+  tags:
+    - core
 
 - name: Repositorios
   include: reposoca.yml
+  tags:
+    - repos
+    - oca
 
 # [ ODOO 8.0 ]
 - name: Create config directory
   file: path={{ odoo_config_path }} state=directory
         owner={{ odoo_user }} group={{ odoo_user }} force=no
   tags:
-    - odoo
-    - odoo_log
+    - log
 
 - name: Copy Odoo configuration file (8.0)
   template: src=odoo-server-v80.conf dest={{ odoo_config_file }}
@@ -185,8 +187,7 @@
         backup=yes
   when: odoo_version == 8.0
   tags:
-    - odoo
-    - odoo_config
+    - config
 
 - name: Copy Odoo init script (8.0)
   template: src=odoo-server-v80.init dest=/etc/init.d/{{ odoo_service }}
