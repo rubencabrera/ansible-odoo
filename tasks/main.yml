@@ -171,7 +171,7 @@
   include: reposoca.yml
   tags:
     - repos
-    - oca
+    - reposoca
 
 # [ ODOO 8.0 ]
 - name: Create config directory
@@ -179,6 +179,9 @@
         owner={{ odoo_user }} group={{ odoo_user }} force=no
   tags:
     - log
+    - repos
+    - reposoca
+    - reposinstancia
 
 - name: Copy Odoo configuration file (8.0)
   template: src=odoo-server-v80.conf dest={{ odoo_config_file }}
@@ -188,6 +191,9 @@
   when: odoo_version == 8.0
   tags:
     - config
+    - repos
+    - reposoca
+    - reposinstancia
 
 - name: Copy Odoo init script (8.0)
   template: src=odoo-server-v80.init dest=/etc/init.d/{{ odoo_service }}

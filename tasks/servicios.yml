@@ -5,19 +5,19 @@
   command: update-rc.d {{ odoo_service }} defaults
   changed_when: False
   tags:
-    - odoo
+    - servicio
     - odoo_init
 
 - name: Enable Odoo service
   service: name={{ odoo_service }} enabled=yes
   when: odoo_init == True
   tags:
-    - odoo
+    - servicio
     - odoo_init
 
 - name: Disable Odoo service
   service: name={{ odoo_service }} enabled=no
   when: odoo_init == False
   tags:
-    - odoo
+    - servicio
     - odoo_init

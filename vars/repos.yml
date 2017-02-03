@@ -98,6 +98,9 @@ repositorios_oca:
   - account-fiscal-rule:
     name: account-fiscal-rule
     url: "https://github.com/oca/account-fiscal-rule.git"
+  - account-invoice-reporting:
+    name: account-invoice-reporting
+    url: "https://github.com/oca/account-invoice-reporting.git"
   - account-closing:
     name: account-closing
     url: "https://github.com/oca/account-closing.git"
