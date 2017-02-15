@@ -59,7 +59,7 @@
     lc_collate: "{{ item.locale}}"
     lc_ctype: "{{ item.locale }}"
     # TODO: confirmar que es este template, ojo.
-    template: "template0"
+    template: "template1"
     state: present
   with_items: "{{ odoo_databases }}"
   when: odoo_config_db_host in [False, 'localhost', '127.0.0.1']
