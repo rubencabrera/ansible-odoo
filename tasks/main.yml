@@ -88,6 +88,8 @@
     - python-openssl
     - python-egenix-mxdatetime
     - python-pypdf
+    # OJO, creo que en ubuntu < 16 no está pypdf2 en los repos.
+    - python-pypdf2
     - python-babel
     - python-zsi
   when: ansible_distribution == 'Ubuntu'
@@ -115,6 +117,7 @@
     - openupgradelib
     - unidecode
     - psycogreen
+    - xlrd
 
 - name: Dependencias pip adicionales para CentOS
   pip: name={{ item }}
@@ -169,9 +172,13 @@
 
 - name: Repositorios
   include: reposoca.yml
+  # TODO: no deberíamos tener que ponerlo aquí, hay que poner
+  #       un condicional por si repositorios_oca no está definido
+  #       y lo mismo para los de instancia
   tags:
     - repos
     - reposoca
+    - reposinstancia
 
 # [ ODOO 8.0 ]
 - name: Create config directory
