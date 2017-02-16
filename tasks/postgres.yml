@@ -103,3 +103,16 @@
   #tags:
     #- odoo
     #- odoo_postgresql
+
+# Usando el rol de postgres para las copias de seguridad. Este rol se ha bajado
+# de github.com/galaxyproject/ansible-postgresql
+
+- name: Copias de seguridad
+  include_role:
+    name: postgresql
+  become: True
+  vars:
+    postgresql_backup_dir: /backups
+  tags:
+    - odoo
+    - odoo_postgresql
