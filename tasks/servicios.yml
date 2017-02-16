@@ -21,3 +21,12 @@
   tags:
     - servicio
     - odoo_init
+
+# Reiniciar el servidor
+- name: Restart odoo service
+  service: name={{ odoo_service }} state=restarted
+  when: odoo_init == True
+  tags:
+    - odoo_restart
+    - repos
+    - reposoca
