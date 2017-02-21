@@ -139,6 +139,13 @@
     - odoo
     - odoo_user
 
+- name: Add ansible user to odoo system user group
+  user: name={{ ansible_user }}
+        groups={{ odoo_user }}
+        append=yes
+  tags:
+    - odoo_user
+
 - name: Create log directory
   file: path={{ odoo_logdir }} state=directory
         owner={{ odoo_user }} group={{ odoo_user }} force=no
