@@ -2,13 +2,6 @@
 
 # Tareas para la creación y gestión de los repositorios de la comunidad.
 
-# Comunidad
-- include_vars: ../vars/repos.yml
-  tags:
-    - reposoca
-    - repos
-
-  # La variable path_repos_oca debe estar definida
 - name: Directorio repositorios oca
   file: path={{ path_repos_oca }} state=directory
   tags:
