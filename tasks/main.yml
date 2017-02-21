@@ -170,14 +170,16 @@
   tags:
     - core
 
-- name: Repositorios
+- name: Repositorios oca
   include: reposoca.yml
-  # TODO: no deberíamos tener que ponerlo aquí, hay que poner
-  #       un condicional por si repositorios_oca no está definido
-  #       y lo mismo para los de instancia
   tags:
     - repos
     - reposoca
+
+- name: Repositorios instancia
+  include: reposinstancia.yml
+  tags:
+    - repos
     - reposinstancia
 
 # [ ODOO 8.0 ]

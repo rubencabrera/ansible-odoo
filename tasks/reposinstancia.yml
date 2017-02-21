@@ -1,0 +1,32 @@
+---
+# Instancia
+
+- name: Directorio repositorios instancia
+  file: path={{ path_repos_instancia }} state=directory
+  tags:
+    - reposinstancia
+    - repos
+
+- name: Clonar repsitorios instancia
+  git:
+    repo: "{{ item.url }}" 
+    depth: 1 
+    dest: "{{ path_repos_instancia }}/{{ item.name }}" 
+    version: "{{ item.version }}"
+    key_file: "{{ item.keyfile }}"
+    ssh_opts: "{{ item.ssh_opts}}"
+    accept_hostkey: yes
+    # Metido porque si no tenemos errores por los pyc
+    force: yes
+  with_items: "{{ repositorios_instancia }}"
+  tags:
+    - reposinstancia
+    - repos
+
+- name: Permisos repositorios
+  file: path={{ path_repos_instancia }} state=directory
+        owner={{ odoo_user }} group={{ odoo_user }} recurse=yes
+  tags:
+    - reposinstancia
+    - repos
+
