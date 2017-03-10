@@ -194,7 +194,7 @@
   file: path={{ odoo_config_path }} state=directory
         owner={{ odoo_user }} group={{ odoo_user }} force=no
   tags:
-    - log
+    - config
     - repos
     - reposoca
     - reposinstancia
