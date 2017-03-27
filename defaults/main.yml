@@ -32,7 +32,7 @@ odoo_config_db_name: False
 odoo_config_db_passwd: praxya2016
 odoo_config_db_port: False
 odoo_config_db_template: template1
-#odoo_config_dbfilter: '^%d'
+odoo_config_dbfilter: '.*'
 odoo_config_debug_mode: False
 odoo_config_pidfile: None
 odoo_config_proxy_mode: False
