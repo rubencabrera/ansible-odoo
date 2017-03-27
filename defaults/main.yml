@@ -7,6 +7,7 @@ odoo_rootdir: "/opt/odoo"
 odoo_init: True
 odoo_databases: [{name: odoo, locale: 'es_ES.UTF-8'}]      # [{name: prod, locale: 'en_US.UTF-8'}]
 odoo_config_path: "/opt/config"
+odoo_service: "odoo-server"
 odoo_config_file: "{{ odoo_config_path }}/{{ odoo_service }}.conf"
 # Forzar la escritura del archivo de configuración
 odoo_force_config: True
