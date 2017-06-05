@@ -9,17 +9,16 @@ odoo_databases: [{name: odoo, locale: 'es_ES.UTF-8'}]      # [{name: prod, local
 odoo_config_path: "/opt/config"
 odoo_service: "odoo-server"
 odoo_config_file: "{{ odoo_config_path }}/{{ odoo_service }}.conf"
-# Forzar la escritura del archivo de configuración
+# Forces overwrite of the odoo conf file, important when adding new repos
 odoo_force_config: True
 odoo_repo_type: git     # git or hg
 odoo_repo_url: https://github.com/odoo/odoo.git
 odoo_repo_dest: "{{ odoo_rootdir }}"
 odoo_repo_rev: 8.0
-  
 # Configuration options
 odoo_config_addons_path: "{{ addons_path }}"
-odoo_config_admin_passwd: praxya2016
-# Dejar en false porque falla con addons personalizados
+odoo_config_admin_passwd: admin
+# TODO: Setting auto reload to True fails with custom modules
 odoo_config_auto_reload: False
 odoo_config_csv_internal_sep: ';'
 odoo_config_data_dir: "{{ odoo_rootdir }}/.local/share/Odoo"
@@ -29,7 +28,7 @@ odoo_config_db_user: odoo
 odoo_config_db_host_user: "{{ odoo_config_db_user }}"
 odoo_config_db_maxconn: 64
 odoo_config_db_name: False
-odoo_config_db_passwd: praxya2016
+odoo_config_db_passwd: odoo
 odoo_config_db_port: False
 odoo_config_db_template: template1
 odoo_config_dbfilter: '.*'
@@ -74,7 +73,7 @@ odoo_config_xmlrpcs_port: 8071
 # Extra options
 odoo_user_sshkeys: False    # ../../path/to/public_keys/*
 # Repositorios.
-# TODO: sacar a otros archivos
+# TODO: Put in another file when issue #14248 in ansible gets fixed
 path_repos: "/opt/repos"
 path_repos_oca: "{{ path_repos }}/oca"
 repositorios_oca:
