@@ -1,5 +1,5 @@
+# Repositorios Instancia
 ---
-# Instancia
 
 - name: Directorio repositorios instancia
   file: path={{ path_repos_instancia }} state=directory
@@ -16,7 +16,7 @@
     key_file: "{{ item.keyfile }}"
     ssh_opts: "{{ item.ssh_opts}}"
     accept_hostkey: yes
-    # Metido porque si no tenemos errores por los pyc
+    # TODO: Substitute this force with something that ignores pyc files
     force: yes
   with_items: "{{ repositorios_instancia }}"
   tags:
