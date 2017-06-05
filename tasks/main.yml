@@ -128,10 +128,10 @@
     - egenix-mx-base
   when: ansible_distribution == 'CentOS'
 
-- name: Instalar postgres
-  package: name={{item}} state=latest
-  with_items:
-    - postgresql
+#- name: Instalar postgres
+  #package: name={{item}} state=latest
+  #with_items:
+    #- postgresql
 
 - name: Add Odoo system user
   user: name={{ odoo_user }} shell=/bin/bash
@@ -234,7 +234,7 @@
 #     - odoo
 #     - odoo_ssh
 
-- name: Postgres tasks
-  include: postgres.yml
+#- name: Postgres tasks
+  #include: postgres.yml
 
 - include: servicios.yml
