@@ -1,15 +1,17 @@
 # Odoo
 
-Rol de ansible para instalar Odoo.
+Ansible role to install and configure odoo.
+Based on the role by osiell (https://github.com/osiell)
 
 # Inventario
 
-El archivo de inventario no está incluido en este repositorio,
-si no se tiene configurado eso no va a funcionar.
+Inventory files are not inclueded here, please configure your hosts before
+trying this role. See ansible documentation to configure your inventory.
 
 ## Systems supported
 
 - Ubuntu Trusty (14.04)
+- CentOS 7 (still on development)
 
 ## Variables
 
