@@ -98,7 +98,7 @@
 
 # TODO: condicionar según arquitectura y sistema operativo
 - name: Instalar wkhtmltopdf en Ubuntu 64 bits
-  action: apt deb=http://download.gna.org/wkhtmltopdf/0.12/0.12.1/wkhtmltox-0.12.1_linux-trusty-amd64.deb
+  action: apt deb=https://downloads.wkhtmltopdf.org/0.12/0.12.1/wkhtmltox-0.12.1_linux-trusty-amd64.deb
   when: ansible_distribution == 'Ubuntu'
 
   # TODO: la condición de version == '7' parece no cumplirse
