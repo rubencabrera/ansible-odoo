@@ -1,6 +1,5 @@
----
-
 # Tareas para la creación y gestión de los repositorios de la comunidad.
+---
 
 - name: Directorio repositorios oca
   file: path={{ path_repos_oca }} state=directory
@@ -26,12 +25,3 @@
   tags:
     - reposoca
     - repos
-
-# Debido a un bug en ansible no podemos usar un puerto distinto al 22 para
-# usar ssh. Esta tarea queda obsoleta con el merge del 
-# PR #18734 en ansible/ansible
-# Y lo que hay ahora es un parche cutre
-# ssh config
-#- name: ssh Config para gitlab de praxya
-  #template: src=config dest=/home/{{ ansible_user }}/.ssh/config
-    #owner={{ ansible_user }} mode=0644 force=yes
