@@ -1,5 +1,5 @@
----
 # Configura los servicios de odoo. Ejecutar después de main y de postgres. 
+---
 
 - name: Set Odoo service runlevels
   command: update-rc.d {{ odoo_service }} defaults
@@ -22,7 +22,6 @@
     - servicio
     - odoo_init
 
-# Reiniciar el servidor
 - name: Restart odoo service
   service: name={{ odoo_service }} state=restarted
   when: odoo_init == True
