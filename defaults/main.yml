@@ -76,6 +76,7 @@ odoo_user_sshkeys: False    # ../../path/to/public_keys/*
 # TODO: Put in another file when issue #14248 in ansible gets fixed
 path_repos: "/opt/repos"
 path_repos_oca: "{{ path_repos }}/oca"
+path_repos_instancia: "{{ path_repos }}/custom"
 repositorios_oca:
   - stock-logistics-workflow:
     name: stock-logistics-workflow
