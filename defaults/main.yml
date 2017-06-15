@@ -231,3 +231,4 @@ repositorios_oca:
   - l10n-spain:
     name: l10n-spain
     url: "https://github.com/oca/l10n-spain.git"
+repositorios_instancia: {}
