@@ -71,6 +71,7 @@
 - name: Install Odoo dependencies Ubuntu
   package: name={{item}} state=latest
   with_items:
+    - locales
     - python-webdav
     - python-gdata
     - xfonts-75dpi
@@ -141,7 +142,7 @@
     - odoo_user
 
 - name: Add ansible user to odoo system user group
-  user: name={{ ansible_user }}
+  user: name={{ ansible_user_id }}
         groups={{ odoo_user }}
         append=yes
   tags:
