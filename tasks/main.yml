@@ -89,6 +89,11 @@
     - python-zsi
   when: ansible_distribution == 'Ubuntu'
 
+- name: Install lxc for test container
+  package: name=lxc state=latest
+  when: 
+    - ansible_distribution == 'Ubuntu'
+    - odoo_test_container
 
 # TODO: condicionar según arquitectura y sistema operativo
 - name: Instalar wkhtmltopdf en Ubuntu 64 bits
