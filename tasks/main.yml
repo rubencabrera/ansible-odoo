@@ -4,13 +4,6 @@
   include_vars:
     dir: 'vars'
 
-# Moved to the playbook as this role will be another container.
-#- name: Include nginx role
-  #include_role:
-    #name: nginx
-  #vars:
-    #nginx_http_params: ["client_max_body_size 256M", "error_log /var/log/nginx/error.log"]
-
 - name: Instalar dependencias comunes
   package: name={{item}} state=latest
   with_items:
@@ -234,8 +227,5 @@
 #   tags:
 #     - odoo
 #     - odoo_ssh
-
-#- name: Postgres tasks
-  #include: postgres.yml
 
 - include: servicios.yml
