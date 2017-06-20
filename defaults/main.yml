@@ -2,6 +2,8 @@ odoo_version: 8.0
 odoo_user: odoo
 odoo_user_passwd: odoo
 odoo_test_container: False
+test_container_ssh_port: 22022
+test_container_odoo_port: 28069
 odoo_logdir: "/var/log/{{ odoo_user }}"
 odoo_workdir: "/opt/odoo"
 odoo_rootdir: "/opt/odoo"
