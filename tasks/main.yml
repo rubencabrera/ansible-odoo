@@ -118,6 +118,7 @@
     - unidecode
     - psycogreen
     - xlrd
+    - cssutils
 
 - name: Dependencias pip adicionales para CentOS
   pip: name={{ item }}
@@ -135,9 +136,17 @@
 - name: Add Odoo system user
   user: name={{ odoo_user }} shell=/bin/bash
         password={{ odoo_user_passwd }} update_password=on_create
+  register: add_user
   tags:
     - odoo
     - odoo_user
+
+  # TODO: if it is a lxc, we have to reinstall openssh-server first
+- name: Generate ssh key
+  shell: ssh-keygen -b 2048 -t rsa -f {{ ansible_env.HOME }}/.ssh/id_rsa -q -N ""
+  args:
+    creates: "{{ ansible_env.HOME }}/.ssh/id_rsa"
+  when: add_user.changed
 
 - name: Add ansible user to odoo system user group
   user: name={{ ansible_user_id }}
@@ -204,7 +213,6 @@
         owner={{ odoo_user }} group={{ odoo_user }} mode=0640
         force={{ odoo_force_config and 'yes' or 'no' }}
         backup=yes
-  when: odoo_version == 8.0
   tags:
     - config
     - repos
@@ -216,7 +224,7 @@
         owner=root group=root mode=0755
         force={{ odoo_force_config and 'yes' or 'no' }}
         backup=yes
-  when: odoo_version == 8.0
+  #when: odoo_version == 8.0
   tags:
     - odoo
     - odoo_config

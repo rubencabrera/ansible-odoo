@@ -33,7 +33,7 @@ odoo_config_db_maxconn: 64
 odoo_config_db_name: False
 odoo_config_db_passwd: odoo
 odoo_config_db_port: False
-odoo_config_db_template: template1
+odoo_config_db_template: "template1"
 odoo_config_dbfilter: '.*'
 odoo_config_debug_mode: False
 odoo_config_pidfile: None
