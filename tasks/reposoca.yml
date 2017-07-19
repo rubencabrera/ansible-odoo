@@ -11,7 +11,7 @@
     repo: "{{ item.url }}" 
     depth: 1 
     dest: "{{ path_repos_oca }}/{{ item.name }}" 
-    version: "{{ odoo_version }}"
+    version: "{{ odoo_repo_rev }}"
     # Metido porque si no tenemos errores por los pyc
     force: yes
   with_items: "{{ repositorios_oca }}"
