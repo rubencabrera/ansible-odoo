@@ -119,6 +119,8 @@
     - psycogreen
     - xlrd
     - cssutils
+    - backports.functools_lru_cache
+    - dbfpy
 
 - name: Dependencias pip adicionales para CentOS
   pip: name={{ item }}
