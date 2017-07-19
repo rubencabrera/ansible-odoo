@@ -1,0 +1,11 @@
+# Service definition for container-enabled role
+---
+odoo:
+  from: "ubuntu:xenial"
+  expose:
+    - 8069
+  roles:
+    - basicos
+    - odoo
+  depends_on:
+    - database
