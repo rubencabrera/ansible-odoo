@@ -121,6 +121,7 @@
     - cssutils
     - backports.functools_lru_cache
     - dbfpy
+    - zklib
 
 - name: Dependencias pip adicionales para CentOS
   pip: name={{ item }}
