@@ -97,8 +97,12 @@
 
 # TODO: condicionar según arquitectura y sistema operativo
 - name: Instalar wkhtmltopdf en Ubuntu 64 bits
-  action: apt deb=https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.1/wkhtmltox-0.12.1_linux-trusty-amd64.deb
+  #action: apt deb=https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.1/wkhtmltox-0.12.1_linux-trusty-amd64.deb
+  apt:
+    deb: https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.1/wkhtmltox-0.12.1_linux-trusty-amd64.deb
   when: ansible_distribution == 'Ubuntu'
+  tags:
+    - wk
 
   # TODO: la condición de version == '7' parece no cumplirse
 - name: Instalar wkhtmltopdf en Centos7
