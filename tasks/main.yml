@@ -5,6 +5,7 @@
     dir: 'vars'
 
 - name: Instalar dependencias comunes
+  become: True
   package: name={{item}} state=latest
   with_items:
     - git
@@ -40,6 +41,7 @@
     - python-gevent
 
 - name: Install Odoo dependencies for CentOS
+  become: True
   package: name={{item}} state=latest
   with_items:
     - python-devel
@@ -63,6 +65,7 @@
 
 - name: Install Odoo dependencies Ubuntu
   package: name={{item}} state=latest
+  become: True
   with_items:
     - locales
     - python-webdav
@@ -90,6 +93,7 @@
   when: ansible_distribution == 'Ubuntu'
 
 - name: Install lxc for test container
+  become: True
   package: name=lxc state=latest
   when: 
     - ansible_distribution == 'Ubuntu'
@@ -97,6 +101,7 @@
 
 # TODO: condicionar según arquitectura y sistema operativo
 - name: Instalar wkhtmltopdf en Ubuntu 64 bits
+  become: True
   #action: apt deb=https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.1/wkhtmltox-0.12.1_linux-trusty-amd64.deb
   apt:
     deb: https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.1/wkhtmltox-0.12.1_linux-trusty-amd64.deb
@@ -107,16 +112,19 @@
 
   # TODO: la condición de version == '7' parece no cumplirse
 - name: Instalar wkhtmltopdf en Centos7
+  become: True
   yum:
     name: https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.1/wkhtmltox-0.12.1_linux-centos7-amd64.rpm
     state: present
   when: ansible_distribution == 'CentOS' and ansible_distribution_version == '7'
 
 - name: Instalar locale para el sistema
+  become: True
   locale_gen: name=es_ES.UTF-8 state=present
   when: ansible_distribution == 'Ubuntu'
 
 - name: Instalar dependencias pip
+  become: True
   pip: name={{ item }}
   with_items: 
     - openupgradelib
@@ -129,6 +137,7 @@
     - zklib
 
 - name: Dependencias pip adicionales para CentOS
+  become: True
   pip: name={{ item }}
   with_items: 
     - gdata
@@ -142,6 +151,7 @@
     #- postgresql
 
 - name: Add Odoo system user
+  become: True
   user: name={{ odoo_user }} shell=/bin/bash
         password={{ odoo_user_passwd }} update_password=on_create
   register: add_user
@@ -157,6 +167,7 @@
   when: add_user.changed
 
 - name: Add ansible user to odoo system user group
+  become: True
   user: name={{ ansible_user_id }}
         groups={{ odoo_user }}
         append=yes
@@ -164,6 +175,7 @@
     - odoo_user
 
 - name: Create log directory
+  become: True
   file: path={{ odoo_logdir }} state=directory
         owner={{ odoo_user }} group={{ odoo_user }} force=no
   tags:
@@ -178,6 +190,7 @@
     - odoo_project
 
 - name: Clone project repository (Git)
+  become: True
   git:  repo={{ odoo_repo_url }}
         dest={{ odoo_repo_dest }}
         version={{ odoo_repo_rev }}
@@ -208,6 +221,7 @@
 
 # [ ODOO 8.0 ]
 - name: Create config directory
+  become: True
   file: path={{ odoo_config_path }} state=directory
         owner={{ odoo_user }} group={{ odoo_user }} force=no
   tags:
@@ -217,6 +231,7 @@
     - reposinstancia
 
 - name: Copy Odoo configuration file (8.0)
+  become: True
   template: src=odoo-server-v80.conf dest={{ odoo_config_file }}
         owner={{ odoo_user }} group={{ odoo_user }} mode=0640
         force={{ odoo_force_config and 'yes' or 'no' }}
@@ -228,6 +243,7 @@
     - reposinstancia
 
 - name: Copy Odoo init script (8.0)
+  become: True
   template: src=odoo-server-v80.init dest=/etc/init.d/{{ odoo_service }}
         owner=root group=root mode=0755
         force={{ odoo_force_config and 'yes' or 'no' }}

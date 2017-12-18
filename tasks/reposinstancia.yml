@@ -2,12 +2,14 @@
 ---
 
 - name: Directorio repositorios instancia
+  become: True
   file: path={{ path_repos_instancia }} state=directory
   tags:
     - reposinstancia
     - repos
 
 - name: Clonar repsitorios instancia
+  become: True
   git:
     repo: "{{ item.url }}" 
     depth: 1 
@@ -24,6 +26,7 @@
     - repos
 
 - name: Permisos repositorios
+  become: True
   file: path={{ path_repos_instancia }} state=directory
         owner={{ odoo_user }} group={{ odoo_user }} recurse=yes
   tags:

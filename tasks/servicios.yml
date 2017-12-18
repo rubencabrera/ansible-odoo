@@ -2,6 +2,7 @@
 ---
 
 - name: Set Odoo service runlevels
+  become: True
   command: update-rc.d {{ odoo_service }} defaults
   changed_when: False
   tags:
@@ -9,6 +10,7 @@
     - odoo_init
 
 - name: Enable Odoo service
+  become: True
   service: name={{ odoo_service }} enabled=yes
   when: odoo_init == True
   tags:
@@ -16,6 +18,7 @@
     - odoo_init
 
 - name: Disable Odoo service
+  become: True
   service: name={{ odoo_service }} enabled=no
   when: odoo_init == False
   tags:
@@ -23,6 +26,7 @@
     - odoo_init
 
 - name: Restart odoo service
+  become: True
   service: name={{ odoo_service }} state=restarted
   when: odoo_init == True
   tags:

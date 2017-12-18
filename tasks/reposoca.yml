@@ -2,11 +2,13 @@
 ---
 
 - name: Directorio repositorios oca
+  become: True
   file: path={{ path_repos_oca }} state=directory
   tags:
     - reposoca
 
 - name: Clonar repsitorios oca
+  become: True
   git:
     repo: "{{ item.url }}" 
     depth: 1 
@@ -20,6 +22,7 @@
     - repos
 
 - name: Permisos repositorios
+  become: True
   file: path={{ path_repos_oca }} state=directory
         owner={{ odoo_user }} group={{ odoo_user }} recurse=yes
   tags:
