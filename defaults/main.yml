@@ -1,9 +1,10 @@
 odoo_version: 8.0
+nombre_instancia: odoo-server
 odoo_user: odoo
 odoo_user_passwd: odoo
 odoo_test_container: False
 test_container_ssh_port: 22022
-test_container_odoo_port: 28069
+test_container_odoo_port: 18069
 odoo_logdir: "/var/log/{{ odoo_user }}"
 odoo_workdir: "/opt/odoo"
 odoo_rootdir: "/opt/odoo"
@@ -15,6 +16,7 @@ odoo_config_file: "{{ odoo_config_path }}/{{ odoo_service }}.conf"
 # Forces overwrite of the odoo conf file, important when adding new repos
 odoo_force_config: True
 odoo_repo_type: git     # git or hg
+# TODO: test with ocb
 odoo_repo_url: https://github.com/odoo/odoo.git
 odoo_repo_dest: "{{ odoo_rootdir }}"
 odoo_repo_rev: 8.0
