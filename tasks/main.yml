@@ -19,7 +19,6 @@
     - python-lxml
     - python-imaging
     - python-yaml
-    - python-reportlab
     - python-mako
     - python-werkzeug
     - python-dateutil
@@ -127,6 +126,7 @@
   become: True
   pip: name={{ item }}
   with_items: 
+    - reportlab
     - openupgradelib
     - unidecode
     - psycogreen
