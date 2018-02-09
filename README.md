@@ -11,9 +11,14 @@ trying this role. See ansible documentation to configure your inventory.
 ## Systems supported
 
 - Ubuntu Trusty (14.04)
-- CentOS 7 (still on development)
+- Ubuntu Xenial (16.04)
+- CentOS 7 
 
 ## Variables
+
+These are the role variables and their default values. 
+Passwords should be changed and stored securely with Ansible Vault or your
+prefered secrets manager.
 
 ```yaml
 odoo_service: odoo
