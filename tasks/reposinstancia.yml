@@ -1,4 +1,22 @@
 # Repositorios Instancia
+# Custom repos added before the Odoo Community ones. They can be defined in 
+# the host vars variable repositorios_instancia, with the following structure:
+#
+# repositorios_instancia:
+#   - a-name-to-identify-the-repo:
+#     name: name-of-the-repo # This will be the name of the folder
+#     url: "git@url.of.your.git.server:project/repo-name.git"
+#     # These ssh_opts where needed to make a ssh connection to a private
+#     # git server. The strict key setting is insecure, be aware.
+#     ssh_opts: "-o Port=22022 -o StrictHostKeyChecking=no"
+#     version: master
+#     keyfile: "/full/path/to/the/private/ssh/key" # Use False if not needed. 
+#
+#
+#     If you have repos that contain just a single module, and the 
+#     __openerp__.py file is on the root of the repo structure, this might not
+#     work. I will never support that and you should change it or some day
+#     you will probably regret. 
 ---
 
 - name: Directorio repositorios instancia
