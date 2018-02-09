@@ -91,13 +91,6 @@
     - python-zsi
   when: ansible_distribution == 'Ubuntu'
 
-- name: Install lxc for test container
-  become: True
-  package: name=lxc state=latest
-  when: 
-    - ansible_distribution == 'Ubuntu'
-    - odoo_test_container
-
 # TODO: condicionar según arquitectura y sistema operativo
 - name: Instalar wkhtmltopdf en Ubuntu 64 bits
   become: True
@@ -145,11 +138,6 @@
     - egenix-mx-base
   when: ansible_distribution == 'CentOS'
 
-#- name: Instalar postgres
-  #package: name={{item}} state=latest
-  #with_items:
-    #- postgresql
-
 - name: Add Odoo system user
   become: True
   user: name={{ odoo_user }} shell=/bin/bash
@@ -159,7 +147,6 @@
     - odoo
     - odoo_user
 
-  # TODO: if it is a lxc, we have to reinstall openssh-server first
 - name: Generate ssh key
   shell: ssh-keygen -b 2048 -t rsa -f {{ ansible_env.HOME }}/.ssh/id_rsa -q -N ""
   args:
@@ -253,7 +240,6 @@
     - odoo
     - odoo_config
 
-# [/ ODOO 8.0 ]
 
 # - name: Set SSH public keys for the Odoo user
 #   authorized_key: user={{ odoo_user }}
