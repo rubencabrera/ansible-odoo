@@ -18,7 +18,8 @@
     key_file: "{{ item.keyfile }}"
     ssh_opts: "{{ item.ssh_opts}}"
     accept_hostkey: yes
-    # TODO: Substitute this force with something that ignores pyc files
+    # Using force because of pyc files. They are in .gitignore but ansible
+    # doesn't care
     force: yes
   with_items: "{{ repositorios_instancia }}"
   tags:
