@@ -84,6 +84,7 @@
     - python-pychart
     - python-openssl
     - python-egenix-mxdatetime
+    # Hay que conservar pypdf y pypdf2 ???
     - python-pypdf
     # OJO, creo que en ubuntu < 16 no está pypdf2 en los repos.
     - python-pypdf2
