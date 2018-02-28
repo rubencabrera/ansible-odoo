@@ -129,6 +129,7 @@
     - backports.functools_lru_cache
     - dbfpy
     - zklib
+    - pandas
 
 - name: Dependencias pip adicionales para CentOS
   become: True
